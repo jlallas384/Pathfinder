@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<style type="text/css">
+
+.cell{
+	width: 30px;
+	height: 30px;
+	border: 5px black solid;
+}
+</style>
+<script type="text/javascript">
+document.write("<table style='float: left'>")
+for(i = 0; i < 20; i++){
+	document.write("<tr>")
+	for(j = 0; j < 20; j++){
+		console.log(i)
+		s = "<td class='cell' onclick='toggle(" + i.toString() + "," + j.toString()
+		s += ")'> </td>"
+		document.write(s)
+	}
+	document.write("</tr>")
+}
+document.write("</table>")
+
+start = null
+end = null
+
+grid = new Array(20)
+for(var i = 0; i < 20; i++){
+	grid[i] = new Array(20)
+	for(var j = 0; j < 20; j++){
+		grid[i][j] = 0
+	}
+}
+
+function toggle(i, j){
+	cell = document.getElementsByClassName("cell")[i * 20 + j]
+	txt = document.getElementById("txt")
+	btn = document.getElementById("btn")
+	if(grid[i][j] != 0){
+		if(grid[i][j] == 1){
+			txt.innerHTML = "Choose the starting position"
+			btn.style.visibility = "hidden"
+			start = null;
+		}
+		if(grid[i][j] == 2){
+			txt.innerHTML = "Choose the ending position"
+			btn.style.visibility = "hidden"
+			end = null;
+		}
+		cell.style.backgroundColor = "white"
+		grid[i][j] = 0
+		return
+	}
+	if(start == null){
+		start = [i, j]
+		grid[i][j] = 1;
+		cell.style.backgroundColor = "red"
+		if(end == null) txt.innerHTML = "Choose the ending position";
+		else{
+			txt.innerHTML = "Choose some obstacles"
+			btn.style.visibility = "visible"
+		}
+	}else if(end == null){
+		end = [i, j]
+		grid[i][j] = 2;
+		cell.style.backgroundColor = "blue"
+		txt.innerHTML = "Choose some obstacles"
+		btn.style.visibility = "visible"
+	}else{
+		grid[i][j] = -1;
+		cell.style.backgroundColor = "brown"
+	}
+}
+
+function sleep(seconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
+}
+
+async function go(){
+	queue = [start]
+	tail = 1
+	head = 0
+	vis = new Array(20)
+	frm = new Array(20)
+	for(var i = 0; i < 20; i++){
+		vis[i] = new Array(20)
+		frm[i] = new Array(20)
+		for(var j = 0; j < 20; j++){
+			vis[i][j] = 0;
+		}
+	}
+	vis[start[0]][start[1]] = 1
+	di = [0, 0, -1, 1]
+	dj = [-1, 1, 0, 0]
+	mx = 1
+	while(head < tail){
+		if(queue[head][0] == end[0] && queue[head][1] == end[1]){
+
+			break;
+		}
+		var ci = queue[head][0], cj = queue[head][1];
+		if(vis[ci][cj] > mx) mx = vis[ci][cj]
+		head++;
+		for(var k = 0; k < 4; k++){
+			var ni = ci + di[k], nj = cj + dj[k];
+			if(0 <= ni && 0 <= nj && ni < 20 && nj < 20 && !vis[ni][nj] && grid[ni][nj] != -1){
+				vis[ni][nj] = vis[ci][cj] + 1
+				tail++;
+				frm[ni][nj] = [ci, cj]
+				queue.push([ni, nj])
+			}
+		}
+	}
+	for(var cur = 2; cur <= mx; cur++){
+		for(var ci = 0; ci < 20; ci++){
+			for(var cj = 0; cj < 20; cj++){
+				if(vis[ci][cj] == cur && grid[ci][cj] != 2){
+					cc = document.getElementsByClassName("cell")[ci * 20 + cj]
+					cc.style.backgroundColor = "green"
+				}
+			}
+		}
+		await sleep(0.1)
+	}
+	if(vis[end[0]][end[1]] == 0){
+		txt.innerHTML = "NO PATH FOUND :((((((((((("
+		return
+	}
+	var ci = end[0], cj = end[1]
+	ss = 0
+	while(ci != start[0] || cj != start[1]){
+		cc = document.getElementsByClassName("cell")[ci * 20 + cj]
+		if(ss) cc.style.backgroundColor = "yellow"
+		ss = 1
+		nxt = frm[ci][cj]
+		ci = nxt[0]
+		cj = nxt[1]
+		await sleep(0.1)
+	}
+	s = "MINIMUM STEPS: "
+	s += (vis[end[0]][end[1]] - 1).toString()
+	txt.innerHTML = s
+
+}
+</script>
+<body>
+<h1 id="txt" style="float: right"> Choose the starting point </h1>
+<button onclick="go()" id="btn" style="float: right; margin-top: 100px; width: 100px; height: 30px; visibility: hidden;"> Start </button>
+</body>
+</html>
