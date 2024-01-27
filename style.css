@@ -1,0 +1,18 @@
+body{
+    background-color: #404258;
+}
+
+.cell{
+    background-color: #6B728E;
+    border-color: #50577A !important;
+}
+
+.btn-item:hover{
+    background-color:   ;
+}
+
+.active-btn-item{
+    background-color: #50577A;  
+    border-color: #6B728E !important;
+}
+
