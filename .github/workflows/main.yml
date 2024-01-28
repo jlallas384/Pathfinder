@@ -7,7 +7,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: .
           token: ${{ secrets.DEPLOY }}
           branch: main
           repository-name: jlallas384/jlallas384.github.io
