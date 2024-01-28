@@ -1,0 +1,16 @@
+name: GH Pages
+on: [push]
+permissions: 
+  contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          token: ${{ secrets.DEPLOY }}
+          branch: main
+          repository-name: jlallas384/jlallas384.github.io
+          target-folder: BFSViz
