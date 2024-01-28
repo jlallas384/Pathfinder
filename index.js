@@ -47,7 +47,7 @@ class Position{
     }
 }
 
-const N = 11
+const N = Math.min(12, Math.floor(document.documentElement.clientWidth / 55))
 const directions = [new Position(0, 1), new Position(1, 0), new Position(0, -1), new Position(-1, 0)]
 
 const bfs = (starts, end, bombs) => {
@@ -109,7 +109,9 @@ for(let row = 0; row < N; row++){
 
     for(let col = 0; col < N; col++){
         let colBlock = document.createElement('button')
-        colBlock.classList.add('btn', 'border', 'me-1', 'border-3', 'rounded', 'col', 'p-0', 'cell', 'd-flex', 'justify-content-center', 'align-items-center', 'grid-btn', 'bg-gradient')
+        colBlock.classList.add('btn', 'border', 'border-3', 'rounded', 'col', 'p-0', 'cell', 'd-flex', 'justify-content-center', 'align-items-center', 'grid-btn', 'bg-gradient')
+        if(col != N - 1)
+            colBlock.classList.add('me-1')
         colBlock.style.aspectRatio = '1/1'
         rowBlock.appendChild(colBlock)
     }
@@ -212,6 +214,7 @@ for(let row = 0; row < N; row++){
 
 
 const doBfs = async () => {
+    debugger
     let bombs = []
     let starts = []
     let ends = null
@@ -272,30 +275,22 @@ const doBfs = async () => {
         }
     })();
 
-    await (async () => {
-        for(let layer = 1; layer < N * N; layer++){
-            let notOnPath = layers[layer].filter((outer) => {
-                return !ret.path.some((inner) => {
-                    return inner.equal(outer) && !ends.equal(outer)
-                })
+    for(let layer = 1; layer < N * N; layer++){
+        if(layers[layer].length == 0) break
+        let notOnPath = layers[layer].filter((outer) => {
+            return !ret.path.some((inner) => {
+                return inner.equal(outer) && !ends.equal(outer)
             })
-            for(let {row, col} of notOnPath){
-                grid[row][col].state = noneState
-                grid[row][col].update()
-            }
-
-            await stop(100)
+        })
+        for(let {row, col} of notOnPath){
+            grid[row][col].state = noneState
+            grid[row][col].update()
         }
 
-
-
-    })();
-
-    await (async() => {
-        grid[ends.row][ends.col].state = endState
-        grid[ends.row][ends.col].update()
-    })()
-
+        await stop(100)
+    }
+    grid[ends.row][ends.col].state = endState
+    grid[ends.row][ends.col].update()
 }
 
 const reset = () => {
