@@ -8,7 +8,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: .
-          token: DEPLOY
+          token: ${{ secrets.DEPLOY }}
           branch: main
           repository-name: jlallas384/jlallas384.github.io
           target-folder: BFSViz
