@@ -245,16 +245,17 @@ const doBfs = async () => {
             }
         }
     }
-    (async () => {
-        for(let layer = 1; layer < N * N; layer++){
-            const stop = () => {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve()
-                    }, 300)
-                })
-            }
 
+    const stop = (ms) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve()
+            }, ms)
+        })
+    }
+
+    await (async () => {
+        for(let layer = 1; layer < N * N; layer++){
             for(let {row, col} of layers[layer]){
                 for(let [index, elem] of directions.entries()){
                     if(elem.equal(ret.from[row][col])){
@@ -267,9 +268,34 @@ const doBfs = async () => {
                 }
             }
 
-            await stop()
+            await stop(300)
         }
+    })();
+
+    await (async () => {
+        for(let layer = 1; layer < N * N; layer++){
+            let notOnPath = layers[layer].filter((outer) => {
+                return !ret.path.some((inner) => {
+                    return inner.equal(outer) && !ends.equal(outer)
+                })
+            })
+            for(let {row, col} of notOnPath){
+                grid[row][col].state = noneState
+                grid[row][col].update()
+            }
+
+            await stop(100)
+        }
+
+
+
+    })();
+
+    await (async() => {
+        grid[ends.row][ends.col].state = endState
+        grid[ends.row][ends.col].update()
     })()
+
 }
 
 const reset = () => {
