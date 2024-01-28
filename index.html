@@ -13,21 +13,29 @@
 	    <a class="navbar-brand text-white" href="#">Breadth First Search Visualizer</a>
 	  </div>
 	</nav>
-	<div class="container mt-2">
-		<div class="row">
+	<div class="container mt-4">
+		<div class="row d-flex justify-content-between">
 			<div class="col-8" id="grid", style="height: 90%">
 
 			</div>
-			<div class="col">
-				<button type="button" class="cell col-3 border-3 border btn-item p-0 zz rounded">
-					<img src='images/start_flag.png' class='img-fluid'>	
-				</button>
-				<button type="button" class="cell col-3 border-3 border btn-item p-0 zz rounded">
-					<img src='images/end_flag.png' class='img-fluid'>	
-				</button>
-				<button type="button" class="cell col-3 border-3 border active-btn-item p-0 zz rounded">
-					<img src='images/bomb.png' class='img-fluid'>	
-				</button>
+			<div class="col-3">
+				<div class="row justify-content-between">
+					<button type="button" class="btn cell col-3 border-3 border btn-item p-0 rounded bg-gradient">
+						<img src='images/start_flag.png' class='img-fluid btn-image' style='width: 80%; aspect-ratio: 1/1;'>	
+					</button>
+					<button type="button" class="btn cell col-3 border-3 border btn-item p-0 rounded bg-gradient">
+						<img src='images/end_flag.png' class='img-fluid btn-image' style='width: 80%; aspect-ratio: 1/1;'>	
+					</button>
+					<button type="button" class="btn cell col-3 border-3 border btn-item p-0 rounded bg-gradient">
+						<img src='images/bomb.png' class='img-fluid btn-image' style='width: 80%; aspect-ratio: 1/1;'>	
+					</button>
+				</div>
+				<div class="row mt-2">
+					<button type="button" class="btn btn-primary cell mt-1 bg-gradient" style="height: 50px" onclick="doBfs()">Run</button>
+				</div>
+				<div class="row mt-2">
+					<button type="button" class="btn btn-primary cell mt-1 bg-gradient" style="height: 50px" onclick="reset()">Reset</button>
+				</div>
 			</div>
 		</div>
 	</div>

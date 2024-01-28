@@ -7,8 +7,13 @@ body{
     border-color: #50577A !important;
 }
 
-.btn-item:hover{
-    background-color:   ;
+.btn-item{
+    height: 100px;
+    width: 100px;
+}
+
+button.bg-gradient:hover{
+    background-color: #50577A;
 }
 
 .active-btn-item{
@@ -16,3 +21,18 @@ body{
     border-color: #6B728E !important;
 }
 
+@keyframes pop-anim{
+    70%{
+        width: 95%;
+        height: 95%;
+    }
+    to{
+        width: 80%;
+        height: 80%;
+    }
+}
+
+.pop{
+    animation-name: pop-anim;
+    animation-duration: 0.3s;
+}
