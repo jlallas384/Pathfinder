@@ -47,7 +47,7 @@ class Position{
     }
 }
 
-const N = 100 //Math.min(12, Math.floor(document.documentElement.clientWidth / 55))
+const N = 12 //Math.min(12, Math.floor(document.documentElement.clientWidth / 55))
 const directions = [new Position(0, 1), new Position(1, 0), new Position(0, -1), new Position(-1, 0)]
 
 const bfs = (starts, end, bombs) => {
