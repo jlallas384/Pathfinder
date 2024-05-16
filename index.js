@@ -132,7 +132,7 @@ const btns = document.querySelectorAll(".btn-item")
 class Handler{
     constructor(btn, state){
         this.state = state
-        btn.addEventListener('click', (function(){
+        btn.addEventListener('click', () => {
             if(curState)
                 btns[curState - 1].classList.remove('active-btn-item')
 
@@ -141,12 +141,12 @@ class Handler{
             }else{
                 curState = this.state
             }
-
+            
             if(curState)
                 btns[curState - 1].classList.add('active-btn-item')
                
             btns[this.state - 1].firstChild.nextElementSibling.classList.add('pop') 
-        }).bind(this))
+        })
     }
 }
 
